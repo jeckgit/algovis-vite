@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-grow: 1;
+  border: solid 1px #555;
+}
+.square {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.border-right {
+  border-right: solid 1px #555;
+}
+.border-colored {
+  border: solid 3px green;
+}
