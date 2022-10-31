@@ -1,0 +1,12 @@
+.paper-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: #7fdbb6 !important;
+}
+
+.paper-card span {
+    font-weight: 600;
+    color: #4b4b4b;
+}

@@ -47,6 +47,7 @@ function BinaryTree() {
     const handleBinaryTreeDepthSliderChange = (event: Event, value: number | number[], activeThumb: number) => {
         if(typeof value !== 'number') return;
         setDepthBinaryTree(value);
+        setTreeData(createBinaryTree(value));
     }
 
     const handleStartColorChange = (newValue: ColorResult) => {
@@ -85,7 +86,7 @@ function BinaryTree() {
 
     // const [treeData, setTreeData] = useState<Node | null>(null);
     // const binaryTreeData = ;
-    const [treeData] = useState(createBinaryTree());
+    const [treeData, setTreeData] = useState(createBinaryTree());
 
 
     useEffect(() => {
