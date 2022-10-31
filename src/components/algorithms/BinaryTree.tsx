@@ -1,28 +1,32 @@
 import { getColors } from '../../mixins/helpers';
 import React, { useEffect, useMemo, useState } from 'react';
 import * as d3 from "d3";
+import * as d3Hierarchy from 'd3-hierarchy';
 import { Box, Button, Slider, Typography } from '@mui/material';
 import { BlockPicker, ColorResult } from 'react-color';
 import '../../style/BinaryTree.css';
+import { INode } from '../../models/Node';
 
-class Node {
+class Node implements INode {
     value: number;
-    left?: Node | null;
-    right?: Node | null;
+    left: Node | null;
+    right: Node | null;
 
     constructor(value: number) {
         this.value = value;
+        this.left = null;
+        this.right = null;
     }
 }
 
 function BinaryTree() {
-    const [nodeHeight, setNodeHeigth] = useState(60);
-    const [nodeWidth, setNodeWidth] = useState(1);
-    const [depthBinaryTree, setDepthBinaryTree] = useState(5);
-    const [startColor, setStartColor] = useState("#FFFFFF");
-    const [endColor, setEndColor] = useState("#000000");
-    const [colorPickerStart, setColorPickerStart] = useState(false);
-    const [colorPickerEnd, setColorPickerEnd] = useState(false);
+    const [nodeHeight, setNodeHeigth] = useState<number>(60);
+    const [nodeWidth, setNodeWidth] = useState<number>(1);
+    const [depthBinaryTree, setDepthBinaryTree] = useState<number>(5);
+    const [startColor, setStartColor] = useState<string>("#FFFFFF");
+    const [endColor, setEndColor] = useState<string>("#000000");
+    const [colorPickerStart, setColorPickerStart] = useState<boolean>(false);
+    const [colorPickerEnd, setColorPickerEnd] = useState<boolean>(false);
 
     const height = 500;
     const width = 500;
@@ -30,16 +34,19 @@ function BinaryTree() {
     const margin = useMemo(() => ({ top: 30, right: 30, bottom: 30, left: 60 }), []);
     const d3Container = React.useRef<SVGSVGElement>(null);
 
-    const handleNodeHeightChange = (event: Event, newValue: number) => {
-        setNodeHeigth(newValue);
+    const handleNodeHeightChange = (event: Event, value: number | number[], activeThumb: number) => {
+        if(typeof value !== 'number') return;
+        setNodeHeigth(value);
     };
 
-    const handleNodeWidthChange = (event: Event, newValue: number) => {
-        setNodeWidth(newValue);
+    const handleNodeWidthChange = (event: Event, value: number | number[], activeThumb: number) => {
+        if(typeof value !== 'number') return;
+        setNodeWidth(value);
     }
 
-    const handleBinaryTreeDepthSliderChange = (event: Event, newValue: number) => {
-        setDepthBinaryTree(newValue);
+    const handleBinaryTreeDepthSliderChange = (event: Event, value: number | number[], activeThumb: number) => {
+        if(typeof value !== 'number') return;
+        setDepthBinaryTree(value);
     }
 
     const handleStartColorChange = (newValue: ColorResult) => {
@@ -58,14 +65,13 @@ function BinaryTree() {
     }
 
     const createBinaryTree = (depth = 4) => {
-        let stack = [];
+        let stack = [] as Node[];
         const root = new Node(0);
         stack.push(root);
 
-        let currentNodes = [stack.pop()];
+        let currentNodes = [stack.pop() as Node];
         let nodeCounter = 1;
         for (let i = 0; i < depth - 1; i++) {
-            // eslint-disable-next-line
             currentNodes.forEach((node: Node) => {
                 node.left = new Node(nodeCounter++);
                 node.right = new Node(nodeCounter++);
@@ -77,12 +83,14 @@ function BinaryTree() {
         return root;
     }
 
-    const [treeData] = useState(createBinaryTree(depthBinaryTree));
+    // const [treeData, setTreeData] = useState<Node | null>(null);
+    // const binaryTreeData = ;
+    const [treeData] = useState(createBinaryTree());
 
 
     useEffect(() => {
-
-        const separationMethod = (a, b) => {
+        // setTreeData(createBinaryTree());
+        const separationMethod = (a: d3.HierarchyPointNode<Node>, b: d3.HierarchyPointNode<Node>) => {
             return (a.parent === b.parent ? 1 : 2 / nodeWidth);
             // return (a.parent == b.parent ? 1 : 2) / a.depth;
         }
@@ -102,7 +110,7 @@ function BinaryTree() {
 
             nodes = treemap(nodes);
             // change node Height
-            nodes.each((d: d3.HierarchyPointNode<Node>) => { d.y = d.depth * nodeHeight; });
+            nodes.each((d: any) => { d.y = d.depth * nodeHeight; });
 
             const g = svg.append("g")
                 .attr("transform",
@@ -113,7 +121,7 @@ function BinaryTree() {
                 .attr("class", "link")
                 .style("stroke", "grey")
 
-                .attr("d", (d: d3.HierarchyPointNode<Node>) => {
+                .attr("d", (d: any) => {
                     return "M" + d.x + "," + d.y
                         + "C" + (d.x + d.parent.x) / 2 + "," + d.y
                         + " " + (d.x + d.parent.x) / 2 + "," + d.parent.y
@@ -123,8 +131,8 @@ function BinaryTree() {
             const node = g.selectAll(".node")
                 .data(nodes.descendants())
                 .enter().append("g")
-                .attr("class", (d: d3.HierarchyPointNode<Node>) => "node" + (d.children ? " node--internal" : " node--leaf"))
-                .attr("transform", (d: d3.HierarchyPointNode<Node>, i) => "translate(" + (d.x) + "," + (d.y) + ")");
+                .attr("class", (d: any) => "node" + (d.children ? " node--internal" : " node--leaf"))
+                .attr("transform", (d: any, i) => "translate(" + (d.x) + "," + (d.y) + ")");
             // adds the circle to the node
             node.append("circle")
                 .attr("r", d => 20)
@@ -204,6 +212,8 @@ function BinaryTree() {
                     max={8}
                 />
             </Box>
+
+            
             <Box sx={{ display: 'flex', '.button-wrapper': { mr: 1 } }}>
                 <Box className='button-wrapper'>
                     <Button variant="outlined" onClick={() => setColorPickerStart(true)}>Start Color: <span style={{ color: startColor }}>{startColor}</span></Button>
@@ -212,6 +222,7 @@ function BinaryTree() {
                         <BlockPicker color={startColor} onChangeComplete={handleStartColorChange} />
                     </div>}
                 </Box>
+                
                 <Box className='button-wrapper'>
                     <Button variant="outlined" onClick={() => setColorPickerEnd(true)}>End Color: <span style={{ color: endColor }}>{endColor}</span></Button>
                     {colorPickerEnd && <div style={popover}>
@@ -220,7 +231,6 @@ function BinaryTree() {
                     </div>}
                 </Box>
             </Box>
-
             <svg ref={d3Container} width={width + margin.left + margin.right} height={height + margin.bottom + margin.top} />
         </Box >
 

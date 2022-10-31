@@ -4,9 +4,9 @@ import '../../style/BinarySearch.css';
 
 function BinarySearchAlgo() {
 
-    const [searchableNumbers] = useState(createRandomNumberArray(20));
-    const [foundIndex, setFoundIndex] = useState(null);
-    const [restArray, setRestArray] = useState([]);
+    const [searchableNumbers] = useState<number[]>(createRandomNumberArray(20));
+    const [foundIndex, setFoundIndex] = useState<number>(NaN);
+    const [restArray, setRestArray] = useState<number[][]>([]);
 
     function createRandomNumberArray(amount: number) {
         const numbers = [];
@@ -36,7 +36,6 @@ function BinarySearchAlgo() {
                 // x is on left side
                 high = mid - 1;
             }
-            console.log(arr.slice(low, high + 1));
             toset = [...toset, arr.slice(low, high + 1)];
         }
         setRestArray(toset);
@@ -70,24 +69,28 @@ function BinarySearchAlgo() {
             >
                 <TextField type="number" label="Searched Number" variant="outlined" onChange={handleTextInputChange} />
             </Box>
-            <div className="container" style={{ width: 50 * searchableNumbers.length - 1 + 'px', margin: 'auto' }}>
-                {searchableNumbers.map((val, i) =>
-                    <div key={'square-' + i} className={`square ${i < (searchableNumbers.length - 1) ? 'border-right' : ''} ${foundIndex === i ? 'border-colored' : ''}`}>
-                        {val}
-                    </div>)
-                }
-            </div>
-            <div>
-                {restArray.map((_arr, idx) =>
-                    <div key={idx}>
-                        [{_arr.map((val, _idx) =>
-                            <span key={_idx}>
-                                <span >
-                                    {val}{_idx < _arr.length - 1 ? ',' : ''}
+            <div className='wrapper' style={{ width: 50 * searchableNumbers.length - 1 + 'px', margin: 'auto' }}>
+                <div className="container">
+                    {searchableNumbers.map((val, i) =>
+                        <div key={'square-' + i} className={`square ${i < (searchableNumbers.length - 1) ? 'border-right' : ''} ${foundIndex === i ? 'border-colored' : ''}`}>
+                            {val}
+                        </div>)
+                    }
+                </div>
+                <div className='step-wrapper'>
+                    {restArray.map((_arr, idx) =>
+                        <div className='step-wrapper-row' key={idx} style={{  }}>
+                            <span>Step {idx + 1}:</span>
+                            <div className='spacer' />
+                            [{_arr.map((val, _idx) =>
+                                <span key={_idx}>
+                                    <span >
+                                        {val}{_idx < _arr.length - 1 ? ',' : ''}
+                                    </span>
                                 </span>
-                            </span>
-                        )}]
-                    </div>)}
+                            )}]
+                        </div>)}
+                </div>
             </div>
         </Box >
     )

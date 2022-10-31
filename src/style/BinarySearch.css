@@ -16,3 +16,16 @@
 .border-colored {
   border: solid 3px green;
 }
+
+.step-wrapper {
+  display: flex;
+  flex-direction: column;
+
+}
+.step-wrapper-row  {
+  display: flex;
+}
+
+.spacer {
+  flex-grow: 1;
+}

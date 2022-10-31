@@ -1,14 +1,9 @@
 import { Box } from "@mui/material";
 import * as d3 from "d3";
 import React, { useEffect, useMemo } from "react";
+import { INode } from "../../models/Node";
 
-interface Node {
-    value: number;
-    left: Node;
-    right: Node;
-}
-
-const Tree = ({ treeData }) => {
+const Tree = ({ treeData } : { treeData: INode }) => {
 
     const height = 500;
     const width = 500;
@@ -21,8 +16,8 @@ const Tree = ({ treeData }) => {
             const svg = d3.select(d3Container.current);
             svg.selectAll("*").remove();
             // 
-            const treemap = d3.tree<Node>().size([height, width])
-            let nodes = d3.hierarchy(treeData, (d: Node) => {
+            const treemap = d3.tree<INode>().size([height, width])
+            let nodes = d3.hierarchy(treeData, (d: INode) => {
                 if (d.left && d.right) return [d.left, d.right];
                 if (d.left && !d.right) return [d.left];
                 if (!d.left && d.right) return [d.right];
@@ -40,7 +35,7 @@ const Tree = ({ treeData }) => {
                 .attr("class", "link")
                 .style("stroke", "grey")
 
-                .attr("d", (d: d3.HierarchyPointNode<Node>) => {
+                .attr("d", (d: any) => {
                     return "M" + d.x + "," + d.y
                         + "C" + (d.x + d.parent.x) / 2 + "," + d.y
                         + " " + (d.x + d.parent.x) / 2 + "," + d.parent.y
@@ -50,8 +45,8 @@ const Tree = ({ treeData }) => {
             const node = g.selectAll(".node")
                 .data(nodes.descendants())
                 .enter().append("g")
-                .attr("class", (d: d3.HierarchyPointNode<Node>) => "node" + (d.children ? " node--internal" : " node--leaf"))
-                .attr("transform", (d: d3.HierarchyPointNode<Node>, i) => "translate(" + (d.x) + "," + (d.y) + ")");
+                .attr("class", (d: any) => "node" + (d.children ? " node--internal" : " node--leaf"))
+                .attr("transform", (d: any, i) => "translate(" + (d.x) + "," + (d.y) + ")");
             // adds the circle to the node
             node.append("circle")
                 .attr("r", d => 20)
