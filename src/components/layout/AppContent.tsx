@@ -3,6 +3,7 @@ import { Box, Toolbar } from '@mui/material';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Algotrithms from '../pages/Algorithms';
+import Maps from '../pages/Maps';
 
 function AppContent() {
     return (
@@ -11,6 +12,7 @@ function AppContent() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="algorithms/*" element={<Algotrithms />} />
+                <Route path="maps" element={<Maps />} />
             </Routes>
         </Box>
     );

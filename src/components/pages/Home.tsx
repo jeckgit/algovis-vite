@@ -10,7 +10,8 @@ function Home() {
         { route: 'algorithms/bubblesort', label: 'Bubble Sort' },
         { route: 'algorithms/binarytree', label: 'Binary Tree' },
         { route: 'algorithms/binarysearch', label: 'Binary Search' },
-        { route: 'algorithms/binarysearchtree', label: 'Binary Search Tree' }
+        { route: 'algorithms/binarysearchtree', label: 'Binary Search Tree' },
+        { route: 'maps', label: 'Maps' }
     ];
 
     return (
