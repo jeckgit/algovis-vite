@@ -24,7 +24,7 @@ function Home() {
                 <Grid container spacing={2}>
                     {data.map((item, idx) => (
                         <Grid item xs={3} key={`paper-label-${idx}`}>
-                            <Link href="#" underline="none" color="inherit" onClick={() => navigate(item.route)}>
+                            <Link href="" underline="none" color="inherit" onClick={() => navigate(item.route)}>
                                 <Paper elevation={1} className={"paper-card"} >
                                     <span>{item.label}</span>
                                 </Paper>

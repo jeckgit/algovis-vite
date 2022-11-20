@@ -42,11 +42,16 @@ function AppDrawer({ drawerWidth }: { drawerWidth: number }) {
                 {open &&
                     data.map((item, idx) => (
                         <ListItem key={`item.label-${idx}`}>
-                            <ListItemButton sx={{ py: 0, minHeight: 32, borderRadius: '4px' }} onClick={() => navigate(item.route)}>
+                            <ListItemButton sx={{ py: 0, pl: 3, minHeight: 32, borderRadius: '4px' }} onClick={() => navigate(item.route)}>
                                 <ListItemText primary={item.label} primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
+                <ListItem dense>
+                    <ListItemButton sx={{ borderRadius: '4px', padding: '0 10px' }} onClick={() => navigate('maps')}>
+                        <ListItemText primary={'Maps'} primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }} />
+                    </ListItemButton>
+                </ListItem>
             </List>
         </Drawer>
     );

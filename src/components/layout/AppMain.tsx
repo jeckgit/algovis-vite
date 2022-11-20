@@ -10,7 +10,7 @@ function AppMain() {
   const drawerWidth = 240;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <BrowserRouter>
         <CssBaseline />
         <AppTopBar />
